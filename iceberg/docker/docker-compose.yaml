@@ -1,37 +1,60 @@
 services:
 
-  nessie:
-    build: ./nessie/
-    container_name: dataengineering_iceberg_nessie
-    ports:
-      - "19120:19120"
-    volumes:
-      - type: bind
-        source: ../_data
-        target: /opt/data
-
   jupyter:
     build: ./jupyter/
-    container_name: dataengineering_iceberg_jupyter
+    container_name: chilloutdataengineerin_iceberg_jupyter
+    command: ["jupyter", "notebook", "--allow-root", "--ip", "0.0.0.0", "--no-browser", "--NotebookApp.token=''", "--NotebookApp.password=''"]
     ports:
       - "8888:8888"
     volumes:
       - type: bind
         source: ../_data
-        target: /opt/data
+        target: /opt/warehouse/iceberg
       - type: bind
         source: ../_notebooks
-        target: /_oreilly_iceberg/notebooks
+        target: /_notebooks
+
+  minio:
+    image: minio/minio
+    container_name: chilloutdataengineerin_iceberg_minio
+    command: ["minio", "server", "/opt/warehouse/iceberg", "--console-address", ":9001"]
+    environment:
+      - MINIO_ROOT_USER=admin
+      - MINIO_ROOT_PASSWORD=password
+      - MINIO_DOMAIN=minio
+      - MINIO_REGION_NAME=us-east-1
+      - MINIO_REGION=us-east-1
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - type: bind
+        source: ../_data
+        target: /opt/warehouse/iceberg
+
+  nessie:
+    build: ./nessie/
+    container_name: chilloutdataengineerin_iceberg_nessie
+    ports:
+      - "19120:19120"
+    environment:
+      - nessie.version.store.type=ROCKSDB
+      - nessie.catalog.default-warehouse=iceberg
+      - nessie.catalog.warehouses.iceberg.location=s3://iceberg
+    volumes:
+      - type: bind
+        source: ../_data
+        target: /opt/warehouse/iceberg
 
   trino:
     build: ./trino/
-    container_name: dataengineering_iceberg_trino
+    container_name: chilloutdataengineerin_iceberg_trino
     ports:
       - "8080:8080"
     volumes:
       - type: bind
         source: ../_data
-        target: /opt/data
+        target:  /opt/warehouse/iceberg
       - type: bind
         source: ./trino/config
         target: /etc/trino/
