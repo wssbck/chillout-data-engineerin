@@ -9,18 +9,24 @@ services:
     volumes:
       - type: bind
         source: ../_data
-        target: /opt/warehouse/iceberg
+        target: /opt/data
       - type: bind
         source: ../_notebooks
         target: /_notebooks
 
   minio:
-    image: minio/minio
+    build: ./minio/
     container_name: chilloutdataengineerin_iceberg_minio
-    command: ["minio", "server", "/opt/warehouse/iceberg", "--console-address", ":9001"]
+    entrypoint: |
+      /bin/sh -c "
+      minio server /opt/data --console-address ":9001" &
+      sleep 5;
+      mc rm -r --force local/warehouse;
+      mc mb local/warehouse;
+      tail -f /dev/null"
     environment:
-      - MINIO_ROOT_USER=minioadmin
-      - MINIO_ROOT_PASSWORD=minioadmin
+      - MINIO_ROOT_USER=admin
+      - MINIO_ROOT_PASSWORD=password
       - MINIO_DOMAIN=minio
       - MINIO_REGION_NAME=eu-central-1
       - MINIO_REGION=eu-central-1
@@ -30,7 +36,7 @@ services:
     volumes:
       - type: bind
         source: ../_data
-        target: /opt/warehouse/iceberg
+        target: /opt/data
 
   nessie:
     build: ./nessie/
@@ -40,18 +46,18 @@ services:
     environment:
       - nessie.version.store.type=ROCKSDB
       - nessie.catalog.default-warehouse=iceberg
-      - nessie.catalog.warehouses.iceberg.location=s3://iceberg
+      - nessie.catalog.warehouses.iceberg.location=s3://warehouse/iceberg
       - nessie.catalog.service.s3.default-options.region=eu-central-1
       - nessie.catalog.service.s3.default-options.path-style-access=true
       - nessie.catalog.service.s3.default-options.access-key=urn:nessie-secret:quarkus:nessie.catalog.secrets.access-key
       - nessie.catalog.service.s3.default-options.endpoint=http://minio:9000/
       - nessie.catalog.service.s3.default-options.external-endpoint=http://127.0.0.1:9002/
-      - nessie.catalog.secrets.access-key.name=minioadmin
-      - nessie.catalog.secrets.access-key.secret=minioadmin
+      - nessie.catalog.secrets.access-key.name=admin
+      - nessie.catalog.secrets.access-key.secret=password
     volumes:
       - type: bind
         source: ../_data
-        target: /opt/warehouse/iceberg
+        target: /opt/data
 
   trino:
     build: ./trino/
@@ -61,7 +67,7 @@ services:
     volumes:
       - type: bind
         source: ../_data
-        target:  /opt/warehouse/iceberg
+        target:  /opt/data/
       - type: bind
         source: ./trino/config
         target: /etc/trino/
