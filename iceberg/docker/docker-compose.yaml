@@ -21,12 +21,11 @@ services:
       /bin/sh -c "
       minio server /opt/data --console-address ":9001" &
       sleep 5;
-      mc rm -r --force local/warehouse;
       mc mb local/warehouse;
       tail -f /dev/null"
     environment:
-      - MINIO_ROOT_USER=admin
-      - MINIO_ROOT_PASSWORD=password
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
       - MINIO_DOMAIN=minio
       - MINIO_REGION_NAME=eu-central-1
       - MINIO_REGION=eu-central-1
@@ -51,9 +50,8 @@ services:
       - nessie.catalog.service.s3.default-options.path-style-access=true
       - nessie.catalog.service.s3.default-options.access-key=urn:nessie-secret:quarkus:nessie.catalog.secrets.access-key
       - nessie.catalog.service.s3.default-options.endpoint=http://minio:9000/
-      - nessie.catalog.service.s3.default-options.external-endpoint=http://127.0.0.1:9002/
-      - nessie.catalog.secrets.access-key.name=admin
-      - nessie.catalog.secrets.access-key.secret=password
+      - nessie.catalog.secrets.access-key.name=minioadmin
+      - nessie.catalog.secrets.access-key.secret=minioadmin
     volumes:
       - type: bind
         source: ../_data

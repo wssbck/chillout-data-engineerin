@@ -45,17 +45,18 @@ Run the entire stack using Docker Compose:
 ./drun
 ```
 
-After the stack is up:
+After the stack is up, the following services can be accessed in the browser:
 
-- the Jupyter environment will be available at http://localhost:8888, with notebooks in `/_notebooks/`.
-- the Trino UI will be running at http://localhost:8080 (any user name will do)
-- the Nessie UI will be accessible at http://localhost:19120.
+- the Jupyter environment at http://localhost:8888, with notebooks in `/_notebooks/`.
+- the Trino UI at http://localhost:8080 (any user name will do)
+- the Nessie UI at http://localhost:19120.
+- the Minio console at http://localhost:9001 (user: `minioadmin`, password: `minioadmin`)
 
-To verify that everything works, try executing all cells in the notebook called `00_test.ipynb`, one by one.
+To verify that everything works, try executing cells in the notebook called `00_test.ipynb`, one by one.
 
 ### Cleanup
 
-All Docker containers and images generated for the purpose of the training can be removed by running:
+All Docker containers and images can be removed by running:
 
 ```sh
 ./dclean

@@ -2,12 +2,13 @@ FROM python:3.12-slim
 
 ARG MAVEN_REPO=https://repo1.maven.org/maven2
 
+ARG AVRO_VERSION=1.12.0
+ARG AWS_VERSION=2.30.35
+ARG CAFFEINE_VERSION=3.2.0
 ARG ICEBERG_VERSION=1.8.1
 ARG ICEBERG_SPARK_RUNTIME_VERSION=3.5_2.12
 ARG NESSIE_VERSION=0.103.0
-ARG CAFFEINE_VERSION=3.2.0
 ARG PARQUET_AVRO_VERSION=1.15.0
-ARG AVRO_VERSION=1.12.0
 
 ARG SPARK_HOME=/usr/local/lib/python3.12/site-packages/pyspark
 ENV SPARK_HOME=${SPARK_HOME}
@@ -25,7 +26,8 @@ RUN apt -y update && \
     rm requirements.txt
 
 # set up Iceberg Java libraries and other jars for Spark
-RUN wget ${MAVEN_REPO}/org/apache/iceberg/iceberg-spark-runtime-${ICEBERG_SPARK_RUNTIME_VERSION}/${ICEBERG_VERSION}/iceberg-spark-runtime-${ICEBERG_SPARK_RUNTIME_VERSION}-${ICEBERG_VERSION}.jar && \
+RUN wget ${MAVEN_REPO}/org/apache/iceberg/iceberg-aws-bundle/${ICEBERG_VERSION}/iceberg-aws-bundle-${ICEBERG_VERSION}.jar && \
+    wget ${MAVEN_REPO}/org/apache/iceberg/iceberg-spark-runtime-${ICEBERG_SPARK_RUNTIME_VERSION}/${ICEBERG_VERSION}/iceberg-spark-runtime-${ICEBERG_SPARK_RUNTIME_VERSION}-${ICEBERG_VERSION}.jar && \
     wget ${MAVEN_REPO}/org/apache/iceberg/iceberg-spark-extensions-${ICEBERG_SPARK_RUNTIME_VERSION}/${ICEBERG_VERSION}/iceberg-spark-extensions-${ICEBERG_SPARK_RUNTIME_VERSION}-${ICEBERG_VERSION}.jar && \
     wget ${MAVEN_REPO}/org/projectnessie/nessie-integrations/nessie-spark-extensions-${ICEBERG_SPARK_RUNTIME_VERSION}/${NESSIE_VERSION}/nessie-spark-extensions-${ICEBERG_SPARK_RUNTIME_VERSION}-${NESSIE_VERSION}.jar && \
     wget ${MAVEN_REPO}/com/github/ben-manes/caffeine/caffeine/${CAFFEINE_VERSION}/caffeine-${CAFFEINE_VERSION}.jar && \
