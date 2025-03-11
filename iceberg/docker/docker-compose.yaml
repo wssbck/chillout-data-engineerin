@@ -4,6 +4,10 @@ services:
     build: ./jupyter/
     container_name: chilloutdataengineerin_iceberg_jupyter
     command: ["jupyter", "notebook", "--allow-root", "--ip", "0.0.0.0", "--no-browser", "--NotebookApp.token=''", "--NotebookApp.password=''"]
+    #environment:
+    #  - FSSPEC_S3_ENDPOINT_URL=http://minio:9000
+    #  - FSSPEC_S3_KEY=minioadmin
+    #  - FSSPEC_S3_SECRET=minioadmin
     ports:
       - "8888:8888"
     volumes:
@@ -24,9 +28,9 @@ services:
       mc mb local/warehouse;
       tail -f /dev/null"
     environment:
+      - MINIO_DOMAIN=minio
       - MINIO_ROOT_USER=minioadmin
       - MINIO_ROOT_PASSWORD=minioadmin
-      - MINIO_DOMAIN=minio
       - MINIO_REGION_NAME=eu-central-1
       - MINIO_REGION=eu-central-1
     ports:

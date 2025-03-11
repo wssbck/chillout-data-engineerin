@@ -1,6 +1,8 @@
 duckdb==1.2.1
 notebook==7.3.2
-polars[pyiceberg]==1.23.0
-pyiceberg[hive,pyarrow]==0.9.0
+polars==1.23.0
+pyarrow==19.0.1
+pyiceberg==0.9.0
 pyspark==3.5.5
+s3fs==2025.3.0
 trino==0.333.0
