@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.13-slim
 
 ARG MAVEN_REPO=https://repo1.maven.org/maven2
 
@@ -10,7 +10,7 @@ ARG ICEBERG_SPARK_RUNTIME_VERSION=3.5_2.12
 ARG NESSIE_VERSION=0.103.0
 ARG PARQUET_AVRO_VERSION=1.15.0
 
-ARG SPARK_HOME=/usr/local/lib/python3.12/site-packages/pyspark
+ARG SPARK_HOME=/usr/local/lib/python3.13/site-packages/pyspark
 ENV SPARK_HOME=${SPARK_HOME}
 
 # set language and time zone

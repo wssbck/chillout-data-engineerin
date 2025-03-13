@@ -4,10 +4,6 @@ services:
     build: ./jupyter/
     container_name: chilloutdataengineerin_iceberg_jupyter
     command: ["jupyter", "notebook", "--allow-root", "--ip", "0.0.0.0", "--no-browser", "--NotebookApp.token=''", "--NotebookApp.password=''"]
-    #environment:
-    #  - FSSPEC_S3_ENDPOINT_URL=http://minio:9000
-    #  - FSSPEC_S3_KEY=minioadmin
-    #  - FSSPEC_S3_SECRET=minioadmin
     ports:
       - "8888:8888"
     volumes:
@@ -21,12 +17,7 @@ services:
   minio:
     build: ./minio/
     container_name: chilloutdataengineerin_iceberg_minio
-    entrypoint: |
-      /bin/sh -c "
-      minio server /opt/data --console-address ":9001" &
-      sleep 5;
-      mc mb local/warehouse;
-      tail -f /dev/null"
+    command: ["minio", "server", "/opt/data", "--console-address", ":9001"]
     environment:
       - MINIO_DOMAIN=minio
       - MINIO_ROOT_USER=minioadmin
@@ -73,4 +64,3 @@ services:
       - type: bind
         source: ./trino/config
         target: /etc/trino/
-
