@@ -1,0 +1,66 @@
+services:
+
+  jupyter:
+    build: ./jupyter/
+    container_name: chilloutdataengineerin_iceberg_jupyter
+    command: ["jupyter", "notebook", "--allow-root", "--ip", "0.0.0.0", "--no-browser", "--NotebookApp.token=''", "--NotebookApp.password=''"]
+    ports:
+      - "8888:8888"
+    volumes:
+      - type: bind
+        source: ../_data
+        target: /opt/data
+      - type: bind
+        source: ../_notebooks
+        target: /_notebooks
+
+  minio:
+    build: ./minio/
+    container_name: chilloutdataengineerin_iceberg_minio
+    command: ["minio", "server", "/opt/data", "--console-address", ":9001"]
+    environment:
+      - MINIO_DOMAIN=minio
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+      - MINIO_REGION_NAME=eu-central-1
+      - MINIO_REGION=eu-central-1
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - type: bind
+        source: ../_data
+        target: /opt/data
+
+  nessie:
+    build: ./nessie/
+    container_name: chilloutdataengineerin_iceberg_nessie
+    ports:
+      - "19120:19120"
+    environment:
+      - nessie.version.store.type=ROCKSDB
+      - nessie.catalog.default-warehouse=iceberg
+      - nessie.catalog.warehouses.iceberg.location=s3://warehouse/iceberg
+      - nessie.catalog.service.s3.default-options.region=eu-central-1
+      - nessie.catalog.service.s3.default-options.path-style-access=true
+      - nessie.catalog.service.s3.default-options.access-key=urn:nessie-secret:quarkus:nessie.catalog.secrets.access-key
+      - nessie.catalog.service.s3.default-options.endpoint=http://minio:9000/
+      - nessie.catalog.secrets.access-key.name=minioadmin
+      - nessie.catalog.secrets.access-key.secret=minioadmin
+    volumes:
+      - type: bind
+        source: ../_data
+        target: /opt/data
+
+  trino:
+    build: ./trino/
+    container_name: chilloutdataengineerin_iceberg_trino
+    ports:
+      - "8080:8080"
+    volumes:
+      - type: bind
+        source: ../_data
+        target:  /opt/data/
+      - type: bind
+        source: ./trino/config
+        target: /etc/trino/
