@@ -5,6 +5,7 @@ This repository contains Docker environment with notebooks demonstrating how to 
 - a Jupyter notebook environment that includes, among others, pyspark
 - a single-node Trino cluster (https://trino.io/)
 - an instance of Nessie catalog (https://projectnessie.org/)
+- a MinIO storage service, compatible with AWS S3 and used as the underlying storage
 
 ### Requirements
 
@@ -50,7 +51,7 @@ After the stack is up, the following services can be accessed in the browser:
 - the Jupyter environment at http://localhost:8888, with notebooks in `/_notebooks/`.
 - the Trino UI at http://localhost:8080 (any user name will do)
 - the Nessie UI at http://localhost:19120.
-- the Minio console at http://localhost:9001 (user: `minioadmin`, password: `minioadmin`)
+- the MinIO console at http://localhost:9001 (user: `minioadmin`, password: `minioadmin`)
 
 To verify that everything works, try executing cells in the notebook called `00_test.ipynb`, one by one.
 
