@@ -1,11 +1,11 @@
 # Apache Iceberg
 
-This repository contains Docker environment with notebooks demonstrating how to work with Apache Iceberg tables. It spawns the following services:
+This repository contains a Docker Compose stack with notebooks demonstrating how to work with Apache Iceberg tables on top of AWS S3. It spawns following services:
 
-- a Jupyter notebook environment that includes, among others, pyspark
+- a Jupyter notebook environment that includes PySpark, Polars and DuckDB (https://jupyter.org/)
 - a single-node Trino cluster (https://trino.io/)
 - an instance of Nessie catalog (https://projectnessie.org/)
-- a MinIO storage service, compatible with AWS S3 and used as the underlying storage
+- a MinIO storage service, compatible with AWS S3 and used as the underlying storage (https://min.io/)
 
 ### Requirements
 
@@ -24,7 +24,7 @@ The structure of the folders and files in this project is as follows:
 ```
 +- ./_data/      # stores data generated when working with provided notebooks
 +- ./_notebooks/ # Jupyter notebooks with examples and exercises
-+- ./docker/     # definitions of Docker images and Docker Compose stack
++- ./docker/     # definitions of Docker images and the Docker Compose stack
 +- ./dbuild      # build command (see below)
 +- ./dclean      # clean command (see below)
 +- ./drun        # run command (see below)
@@ -32,7 +32,7 @@ The structure of the folders and files in this project is as follows:
 
 ### Preparations
 
-Build Docker images (it may take awhile):
+Build Docker images (it may take some time):
 
 ```sh
 ./dbuild
@@ -46,11 +46,11 @@ Run the entire stack using Docker Compose:
 ./drun
 ```
 
-After the stack is up, the following services can be accessed in the browser:
+After the stack is up, following services can be accessed in the browser:
 
-- the Jupyter environment at http://localhost:8888, with notebooks in `/_notebooks/`.
+- the Jupyter environment at http://localhost:8888, with notebooks in `/_notebooks/`
 - the Trino UI at http://localhost:8080 (any user name will do)
-- the Nessie UI at http://localhost:19120.
+- the Nessie UI at http://localhost:19120
 - the MinIO console at http://localhost:9001 (user: `minioadmin`, password: `minioadmin`)
 
 To verify that everything works, try executing cells in the notebook called `00_test.ipynb`, one by one.
