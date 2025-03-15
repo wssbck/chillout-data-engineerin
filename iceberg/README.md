@@ -30,6 +30,8 @@ The structure of the folders and files in this project is as follows:
 +- ./drun        # run command (see below)
 ```
 
+To understand how each service is configured to work together, please familiarise yourself with the `./docker/docker-compose.yaml` file, as well as with `Dockerfile` definitions and configuration files in subfolders responsible for each of the services.
+
 ### Preparations
 
 Build Docker images (it may take some time):
@@ -40,20 +42,20 @@ Build Docker images (it may take some time):
 
 ### Running and Testing
 
-Run the entire stack using Docker Compose:
+The Docker Compose stack can be started with:
 
 ```sh
 ./drun
 ```
 
-After the stack is up, following services can be accessed in the browser:
+After the stack is up, following UIs can be accessed in the browser:
 
 - the Jupyter environment at http://localhost:8888, with notebooks in `/_notebooks/`
 - the Trino UI at http://localhost:8080 (any user name will do)
 - the Nessie UI at http://localhost:19120
 - the MinIO console at http://localhost:9001 (user: `minioadmin`, password: `minioadmin`)
 
-To verify that everything works, try executing cells in the notebook called `00_test.ipynb`, one by one.
+To verify that everything works, try executing cells in the notebook called `00_test_and_prepare.ipynb`, one by one.
 
 ### Cleanup
 
