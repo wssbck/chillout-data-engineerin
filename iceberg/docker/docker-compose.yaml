@@ -40,7 +40,7 @@ services:
     environment:
       - nessie.version.store.type=ROCKSDB
       - nessie.catalog.default-warehouse=iceberg
-      - nessie.catalog.warehouses.iceberg.location=s3://warehouse/iceberg
+      - nessie.catalog.warehouses.iceberg.location=s3://lakehouse/iceberg
       - nessie.catalog.service.s3.default-options.region=eu-central-1
       - nessie.catalog.service.s3.default-options.path-style-access=true
       - nessie.catalog.service.s3.default-options.access-key=urn:nessie-secret:quarkus:nessie.catalog.secrets.access-key
