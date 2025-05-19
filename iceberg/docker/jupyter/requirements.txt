@@ -1,8 +1,8 @@
-boto3==1.37.13
-duckdb==1.2.1
-notebook==7.3.3
-polars==1.25.0
-pyarrow==19.0.1
-pyiceberg==0.9.0
+boto3==1.38.18
+duckdb==1.2.2
+notebook==7.4.2
+polars==1.29.0
+pyarrow==20.0.0
+pyiceberg==0.9.1
 pyspark==3.5.5
-trino==0.333.0
+trino==0.334.0
