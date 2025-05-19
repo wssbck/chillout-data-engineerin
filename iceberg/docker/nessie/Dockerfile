@@ -1,1 +1,1 @@
-FROM ghcr.io/projectnessie/nessie:0.103.0
+FROM ghcr.io/projectnessie/nessie:0.104.1
