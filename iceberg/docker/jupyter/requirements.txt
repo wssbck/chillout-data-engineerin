@@ -1,8 +1,9 @@
 boto3==1.38.18
-duckdb==1.2.2
+duckdb==1.3.0
 notebook==7.4.2
 polars==1.29.0
 pyarrow==20.0.0
 pyiceberg==0.9.1
 pyspark==3.5.5
+requests==2.32.4
 trino==0.334.0
