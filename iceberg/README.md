@@ -4,7 +4,7 @@ This repository contains a Docker Compose stack with notebooks demonstrating how
 
 - a Jupyter notebook environment that includes PySpark, Polars and DuckDB (https://jupyter.org/)
 - a single-node Trino cluster (https://trino.io/)
-- an instance of Nessie catalog (https://projectnessie.org/)
+- an instance of Lakekeeper catalog (https://lakekeeper.io/)
 - a MinIO storage service, compatible with AWS S3 and used as the underlying storage (https://min.io/)
 
 ### Requirements
@@ -52,7 +52,6 @@ After the stack is up, following UIs can be accessed in the browser:
 
 - the Jupyter environment at http://localhost:8888, with notebooks in `/_notebooks/`
 - the Trino UI at http://localhost:8080 (any user name will do)
-- the Nessie UI at http://localhost:19120
 - the MinIO console at http://localhost:9001 (user: `minioadmin`, password: `minioadmin`)
 
 To verify that everything works, try executing cells in the notebook called `00_test_and_prepare.ipynb`, one by one.

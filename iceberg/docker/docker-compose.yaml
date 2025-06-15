@@ -26,12 +26,6 @@ services:
       - MINIO_ROOT_PASSWORD=minioadmin
       - MINIO_REGION_NAME=eu-central-1
       - MINIO_REGION=eu-central-1
-    # healthcheck:
-    #   test: [ "CMD", "mc", "ls", "local", "|", "grep", "examples" ]
-    #   interval: 2s
-    #   timeout: 10s
-    #   retries: 2
-    #   start_period: 15s
     ports:
       - "9000:9000"
       - "9001:9001"
@@ -40,28 +34,8 @@ services:
         source: ../_data
         target: /opt/data
 
-  # nessie:
-  #   build: ./nessie/
-  #   container_name: cde_iceberg_nessie
-  #   ports:
-  #     - "19120:19120"
-  #   environment:
-  #     - nessie.version.store.type=ROCKSDB
-  #     - nessie.catalog.default-warehouse=iceberg
-  #     - nessie.catalog.warehouses.iceberg.location=s3://warehouse/iceberg
-  #     - nessie.catalog.service.s3.default-options.region=eu-central-1
-  #     - nessie.catalog.service.s3.default-options.path-style-access=true
-  #     - nessie.catalog.service.s3.default-options.access-key=urn:nessie-secret:quarkus:nessie.catalog.secrets.access-key
-  #     - nessie.catalog.service.s3.default-options.endpoint=http://minio:9000/
-  #     - nessie.catalog.secrets.access-key.name=minioadmin
-  #     - nessie.catalog.secrets.access-key.secret=minioadmin
-  #   volumes:
-  #     - type: bind
-  #       source: ../_data
-  #       target: /opt/data
-
   lakekeeper:
-    image: quay.io/lakekeeper/catalog:latest-main
+    build: ./lakekeeper/
     container_name: cde_iceberg_lakekeeper
     environment:
       - LAKEKEEPER__PG_ENCRYPTION_KEY=postgresql_key
@@ -76,30 +50,10 @@ services:
       retries: 3
       start_period: 3s
     depends_on:
-      #- lakekeeper-migrate
       - postgres
       - minio
-      #  condition: service_completed_successfully
-      #postgres:
-      #  condition: service_healthy
-      #minio:
-      #  condition: service_healthy
     ports:
       - "8181:8181"
-
-  # lakekeeper-migrate:
-  #   image: quay.io/lakekeeper/catalog:latest-main
-  #   container_name: cde_iceberg_lakekeeper_migrate
-  #   environment:
-  #     - LAKEKEEPER__PG_ENCRYPTION_KEY=postgresql_key
-  #     - LAKEKEEPER__PG_DATABASE_URL_READ=postgresql://postgres:postgres@postgres:5432/postgres
-  #     - LAKEKEEPER__PG_DATABASE_URL_WRITE=postgresql://postgres:postgres@postgres:5432/postgres
-  #     - RUST_LOG=info
-  #   restart: "no"
-  #   command: [ "migrate" ]
-  #   depends_on:
-  #     - postgres
-  #     #  condition: service_healthy
   
   postgres:
     image: bitnami/postgresql:16.3.0
@@ -108,12 +62,6 @@ services:
       - POSTGRESQL_USERNAME=postgres
       - POSTGRESQL_PASSWORD=postgres
       - POSTGRESQL_DATABASE=postgres
-    # healthcheck:
-    #   test: [ "CMD-SHELL", "pg_isready -U postgres -p 5432 -d postgres" ]
-    #   interval: 2s
-    #   timeout: 10s
-    #   retries: 2
-    #   start_period: 10s
 
   trino:
     build: ./trino/

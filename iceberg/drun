@@ -1,3 +1,4 @@
 #/bin/sh
 
+docker compose -f ./docker/docker-compose-migrate.yaml up --abort-on-container-exit
 docker compose -f ./docker/docker-compose.yaml up --abort-on-container-exit

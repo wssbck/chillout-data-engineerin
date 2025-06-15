@@ -1,0 +1,22 @@
+services:
+
+  lakekeeper-migrate:
+    build: ./lakekeeper/
+    container_name: cde_iceberg_lakekeeper_migrate
+    environment:
+      - LAKEKEEPER__PG_ENCRYPTION_KEY=postgresql_key
+      - LAKEKEEPER__PG_DATABASE_URL_READ=postgresql://postgres:postgres@postgres:5432/postgres
+      - LAKEKEEPER__PG_DATABASE_URL_WRITE=postgresql://postgres:postgres@postgres:5432/postgres
+      - RUST_LOG=info
+    restart: "no"
+    command: [ "migrate" ]
+    depends_on:
+      - postgres
+  
+  postgres:
+    image: bitnami/postgresql:16.3.0
+    container_name: cde_iceberg_postgres
+    environment:
+      - POSTGRESQL_USERNAME=postgres
+      - POSTGRESQL_PASSWORD=postgres
+      - POSTGRESQL_DATABASE=postgres
