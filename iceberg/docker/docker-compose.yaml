@@ -2,7 +2,7 @@ services:
 
   jupyter:
     build: ./jupyter/
-    container_name: cde_iceberg_jupyter
+    container_name: cde_jupyter
     command: ["jupyter", "notebook", "--allow-root", "--ip", "0.0.0.0", "--no-browser", "--NotebookApp.token=''", "--NotebookApp.password=''"]
     environment:
       - PYICEBERG_HOME=/_notebooks
@@ -18,7 +18,7 @@ services:
 
   minio:
     build: ./minio/
-    container_name: cde_iceberg_minio
+    container_name: cde_minio
     command: ["minio", "server", "/opt/data", "--console-address", ":9001"]
     environment:
       - MINIO_DOMAIN=minio
@@ -36,7 +36,7 @@ services:
 
   lakekeeper:
     build: ./lakekeeper/
-    container_name: cde_iceberg_lakekeeper
+    container_name: cde_lakekeeper
     environment:
       - LAKEKEEPER__PG_ENCRYPTION_KEY=postgresql_key
       - LAKEKEEPER__PG_DATABASE_URL_READ=postgresql://postgres:postgres@postgres:5432/postgres
@@ -56,8 +56,8 @@ services:
       - "8181:8181"
   
   postgres:
-    image: bitnami/postgresql:16.3.0
-    container_name: cde_iceberg_postgres
+    build: ./postgresql/
+    container_name: cde_postgres
     environment:
       - POSTGRESQL_USERNAME=postgres
       - POSTGRESQL_PASSWORD=postgres
@@ -65,7 +65,7 @@ services:
 
   trino:
     build: ./trino/
-    container_name: cde_iceberg_trino
+    container_name: cde_trino
     ports:
       - "8080:8080"
     volumes:

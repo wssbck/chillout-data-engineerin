@@ -3,7 +3,7 @@ FROM python:3.13-slim
 ARG MAVEN_REPO=https://repo1.maven.org/maven2
 
 ARG CAFFEINE_VERSION=3.2.0
-ARG ICEBERG_VERSION=1.9.0
+ARG ICEBERG_VERSION=1.9.1
 ARG ICEBERG_SPARK_RUNTIME_VERSION=3.5_2.12
 ARG PARQUET_AVRO_VERSION=1.15.2
 
@@ -17,7 +17,7 @@ RUN ln -sf /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 
 # install system-level packages
 RUN apt -y update && \
-    apt -y install curl jq openjdk-17-jre wget
+    apt -y install jq openjdk-17-jre wget
 
 # install Python dependencies
 COPY requirements.txt /
@@ -28,7 +28,7 @@ RUN pip3 install -r requirements.txt && \
 RUN wget ${MAVEN_REPO}/org/apache/iceberg/iceberg-aws-bundle/${ICEBERG_VERSION}/iceberg-aws-bundle-${ICEBERG_VERSION}.jar && \
     wget ${MAVEN_REPO}/org/apache/iceberg/iceberg-spark-runtime-${ICEBERG_SPARK_RUNTIME_VERSION}/${ICEBERG_VERSION}/iceberg-spark-runtime-${ICEBERG_SPARK_RUNTIME_VERSION}-${ICEBERG_VERSION}.jar && \
     wget ${MAVEN_REPO}/org/apache/iceberg/iceberg-spark-extensions-${ICEBERG_SPARK_RUNTIME_VERSION}/${ICEBERG_VERSION}/iceberg-spark-extensions-${ICEBERG_SPARK_RUNTIME_VERSION}-${ICEBERG_VERSION}.jar && \
-    wget ${MAVEN_REPO}/com/github/ben-manes/caffeine/caffeine/${CAFFEINE_VERSION}/caffeine-${CAFFEINE_VERSION}.jar && \
+   # wget ${MAVEN_REPO}/com/github/ben-manes/caffeine/caffeine/${CAFFEINE_VERSION}/caffeine-${CAFFEINE_VERSION}.jar && \
     wget ${MAVEN_REPO}/org/apache/parquet/parquet-avro/${PARQUET_AVRO_VERSION}/parquet-avro-${PARQUET_AVRO_VERSION}.jar && \
     mkdir ${SPARK_HOME}/conf && \
     mv *.jar ${SPARK_HOME}/jars
