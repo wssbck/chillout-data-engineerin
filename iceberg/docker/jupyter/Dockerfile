@@ -2,8 +2,8 @@ FROM python:3.13-slim
 
 ARG MAVEN_REPO=https://repo1.maven.org/maven2
 
-ARG CAFFEINE_VERSION=3.2.0
-ARG ICEBERG_VERSION=1.9.1
+# ARG CAFFEINE_VERSION=3.2.0
+ARG ICEBERG_VERSION=1.9.2
 ARG ICEBERG_SPARK_RUNTIME_VERSION=3.5_2.12
 ARG PARQUET_AVRO_VERSION=1.15.2
 
@@ -11,13 +11,13 @@ ARG SPARK_HOME=/usr/local/lib/python3.13/site-packages/pyspark
 ENV SPARK_HOME=${SPARK_HOME}
 
 # set language and time zone
-ENV LANG C.UTF-8
-ENV LC_ALL C.UTF-8
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
 RUN ln -sf /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 
 # install system-level packages
 RUN apt -y update && \
-    apt -y install jq openjdk-17-jre wget
+    apt -y install jq openjdk-21-jre wget
 
 # install Python dependencies
 COPY requirements.txt /
