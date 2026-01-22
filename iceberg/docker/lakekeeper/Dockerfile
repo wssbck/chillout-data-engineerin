@@ -1,1 +1,1 @@
-FROM quay.io/lakekeeper/catalog:latest-main
+FROM quay.io/lakekeeper/catalog:v0.11.1

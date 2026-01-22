@@ -1,1 +1,1 @@
-FROM bitnami/postgresql:17
+FROM postgres:18.1
