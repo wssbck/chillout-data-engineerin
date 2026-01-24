@@ -6,6 +6,7 @@ This repository contains a Docker Compose stack with notebooks demonstrating how
 - a single-node Trino cluster (https://trino.io/)
 - an instance of Lakekeeper catalog (https://lakekeeper.io/)
 - a MinIO storage service, compatible with AWS S3 and used as the underlying storage (https://min.io/)
+- a PostgreSQL database for Lakekeeper metadata storage
 
 ### Requirements
 
@@ -22,12 +23,13 @@ In order to use the contents of this repository on Windows, WSL (Windows Subsyst
 The structure of the folders and files in this project is as follows:
 
 ```
-+- ./_data/      # stores data generated when working with provided notebooks
-+- ./_notebooks/ # Jupyter notebooks with examples and exercises
-+- ./docker/     # definitions of Docker images and the Docker Compose stack
-+- ./dbuild      # build command (see below)
-+- ./dclean      # clean command (see below)
-+- ./drun        # run command (see below)
+.
+├── _data/      # stores data generated when working with provided notebooks
+├── _notebooks/ # Jupyter notebooks with examples and exercises
+├── docker/     # definitions of Docker images and the Docker Compose stack
+├── dbuild      # build command (see below)
+├── dclean      # clean command (see below)
+└── drun        # run command (see below)
 ```
 
 To understand how each service is configured to work together, please familiarise yourself with the `./docker/docker-compose.yaml` file, as well as with `Dockerfile` definitions and configuration files in subfolders responsible for each of the services.
@@ -54,7 +56,7 @@ After the stack is up, following UIs can be accessed in the browser:
 - the Trino UI at http://localhost:8080 (any user name will do)
 - the MinIO console at http://localhost:9001 (user: `minioadmin`, password: `minioadmin`)
 
-To verify that everything works, try executing cells in the notebook called `00_test_and_prepare.ipynb`, one by one.
+To intialise the environment and verify that everything works, execute cells in the notebook called `prepare.ipynb`, one by one.
 
 ### Cleanup
 
