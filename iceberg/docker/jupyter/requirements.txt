@@ -6,6 +6,6 @@ polars==1.37.1
 psycopg==3.3.2
 pyarrow==23.0.0
 pyiceberg==0.10.0
-pyspark==3.5.8
+pyspark==4.0.1
 requests==2.32.5
 trino==0.336.0
