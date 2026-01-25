@@ -1,6 +1,6 @@
 # Apache Iceberg
 
-This repository contains a Docker Compose stack with notebooks demonstrating how to work with Apache Iceberg tables on top of AWS S3. It spawns following services:
+This folder contains a Docker Compose stack with notebooks demonstrating how to work with Apache Iceberg tables. It spawns following services:
 
 - a Jupyter notebook environment that includes PySpark, Polars and DuckDB (https://jupyter.org/)
 - a single-node Trino cluster (https://trino.io/)
