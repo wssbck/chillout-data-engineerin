@@ -100,19 +100,27 @@ A comprehensive workshop notebook covering advanced Iceberg features:
 
 - Setting up PyIceberg and Spark clients
 - Creating and managing tables
-- **Partitioning strategies**
-  - Changing partition layouts on existing tables
-  - Using different partition transforms (years, buckets)
-- **Snapshot management**
-  - Time-travel queries using snapshot IDs
-  - Creating and querying tags for specific snapshots
-  - Expiring old snapshots
-- **Multi-library access**
-  - Querying tables with Polars and DuckDB
-  - Exploring the PyIceberg API
-- **Data file lifecycle**
-  - Understanding data files vs. deleted files
-  - Inspecting metadata tables (data_files, all_data_files)
+
+**Partitioning strategies**
+
+- Changing partition layouts on existing tables
+- Using different partition transforms (years, buckets)
+
+**Snapshot management**
+
+- Time-travel queries using snapshot IDs
+- Creating and querying tags for specific snapshots
+- Expiring old snapshots
+
+**Multi-library access**
+
+- Querying tables with Polars and DuckDB
+- Exploring the PyIceberg API
+
+**Data file lifecycle**
+
+- Understanding data files vs. deleted files
+- Inspecting metadata tables (data_files, all_data_files)
 
 ### Cleanup
 
