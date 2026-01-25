@@ -58,6 +58,62 @@ After the stack is up, following UIs can be accessed in the browser:
 
 To intialise the environment and verify that everything works, execute cells in the notebook called `prepare.ipynb`, one by one.
 
+### Notebooks
+
+The `_notebooks/` directory contains the following sets of examples and exercises:
+
+#### `prepare.ipynb`
+
+Initial setup notebook that must be run first. This notebook:
+- Creates the S3 bucket in MinIO for table storage
+- Bootstraps the Lakekeeper catalog
+- Initializes the Iceberg warehouse
+- Verifies that Spark and Trino clients can connect properly
+
+#### `iceberg_overview/`
+
+A series of notebooks demonstrating different ways to work with Apache Iceberg tables:
+
+- **01_pyspark.ipynb** - Introduction to Iceberg with PySpark
+  - Creating tables with SQL and the DataFrame API
+  - Inserting, updating, and deleting data
+  - Exploring table metadata: partitions, snapshots, manifests, and history
+
+- **02_python.ipynb** - Using the pure Python client (pyiceberg)
+  - Loading tables from the catalog
+  - Inspecting table metadata and schemas
+  - Working with snapshots and partition specs
+
+- **03_pyspark_again.ipynb** - Additional PySpark examples
+
+- **04_trino.ipynb** - Querying Iceberg tables with Trino SQL engine
+
+- **05_polars.ipynb** - Reading and querying Iceberg tables using Polars
+
+- **06_duckdb.ipynb** - Accessing Iceberg tables with DuckDB
+
+- **07_views.ipynb** - Creating and managing Iceberg views
+
+#### `buzzwords_2025_workshop/`
+
+A comprehensive workshop notebook covering advanced Iceberg features:
+
+- Setting up PyIceberg and Spark clients
+- Creating and managing tables
+- **Partitioning strategies**
+  - Changing partition layouts on existing tables
+  - Using different partition transforms (years, buckets)
+- **Snapshot management**
+  - Time-travel queries using snapshot IDs
+  - Creating and querying tags for specific snapshots
+  - Expiring old snapshots
+- **Multi-library access**
+  - Querying tables with Polars and DuckDB
+  - Exploring the PyIceberg API
+- **Data file lifecycle**
+  - Understanding data files vs. deleted files
+  - Inspecting metadata tables (data_files, all_data_files)
+
 ### Cleanup
 
 All Docker containers and images can be removed by running:
