@@ -1,11 +1,16 @@
 #/bin/sh
 
-# stop and remove containers (including anonymous volumes) from both compose files
+echo "==> [1/4] Stopping and removing containers and their anonymous volumes"
 docker compose -f ./docker/docker-compose.yaml rm --stop --force --volumes
 docker compose -f ./docker/docker-compose-migrate.yaml rm --stop --force --volumes
 
-# remove data written by the notebooks (MinIO buckets, warehouse files), keeping .gitkeep
+echo "==> [2/4] Removing data written by the notebooks from ./_data (keeping .gitkeep)"
 find ./_data -mindepth 1 ! -name .gitkeep -exec rm -rf {} +
 
-# remove images
-docker rmi --force docker-jupyter docker-minio docker-lakekeeper docker-postgres docker-trino
+echo "==> [3/4] Removing Jupyter autosave checkpoints from ./_notebooks"
+find ./_notebooks -type d -name .ipynb_checkpoints -prune -exec rm -rf {} +
+
+echo "==> [4/4] Removing Docker images"
+docker rmi --force docker-jupyter docker-seaweedfs docker-lakekeeper docker-postgres docker-trino
+
+echo "==> Done. Run ./dbuild to rebuild the images."
