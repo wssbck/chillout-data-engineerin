@@ -1,4 +1,11 @@
 #/bin/sh
 
-docker compose -f ./docker/docker-compose.yaml rm --stop --force
-docker rmi --force docker-jupyter docker-minio docker-nessie docker-trino
+# stop and remove containers (including anonymous volumes) from both compose files
+docker compose -f ./docker/docker-compose.yaml rm --stop --force --volumes
+docker compose -f ./docker/docker-compose-migrate.yaml rm --stop --force --volumes
+
+# remove data written by the notebooks (MinIO buckets, warehouse files), keeping .gitkeep
+find ./_data -mindepth 1 ! -name .gitkeep -exec rm -rf {} +
+
+# remove images
+docker rmi --force docker-jupyter docker-minio docker-lakekeeper docker-postgres docker-trino

@@ -1,1 +1,1 @@
-FROM minio/minio
+FROM quay.io/minio/minio

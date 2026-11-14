@@ -124,7 +124,7 @@ A comprehensive workshop notebook covering advanced Iceberg features:
 
 ### Cleanup
 
-All Docker containers and images can be removed by running:
+All data, Docker containers and images can be removed by running:
 
 ```sh
 ./dclean
