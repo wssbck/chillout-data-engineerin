@@ -16,19 +16,14 @@ services:
         source: ../_notebooks
         target: /_notebooks
 
-  minio:
-    build: ./minio/
-    container_name: cde_minio
-    command: ["minio", "server", "/opt/data", "--console-address", ":9001"]
-    environment:
-      - MINIO_DOMAIN=minio
-      - MINIO_ROOT_USER=minioadmin
-      - MINIO_ROOT_PASSWORD=minioadmin
-      - MINIO_REGION_NAME=eu-central-1
-      - MINIO_REGION=eu-central-1
+  seaweedfs:
+    build: ./seaweedfs/
+    container_name: cde_seaweedfs
+    command: ["server", "-s3", "-dir=/opt/data", "-ip=seaweedfs", "-ip.bind=0.0.0.0", "-s3.port=8333", "-s3.config=/etc/seaweedfs/s3.json"]
     ports:
-      - "9000:9000"
-      - "9001:9001"
+      - "8333:8333"
+      - "8889:8888"
+      - "9333:9333"
     volumes:
       - type: bind
         source: ../_data
@@ -51,7 +46,7 @@ services:
       start_period: 3s
     depends_on:
       - postgres
-      - minio
+      - seaweedfs
     ports:
       - "8181:8181"
   

@@ -1,0 +1,20 @@
+{
+  "identities": [
+    {
+      "name": "s3user",
+      "credentials": [
+        {
+          "accessKey": "s3user",
+          "secretKey": "s3user"
+        }
+      ],
+      "actions": [
+        "Admin",
+        "Read",
+        "List",
+        "Tagging",
+        "Write"
+      ]
+    }
+  ]
+}
