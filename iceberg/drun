@@ -1,4 +1,4 @@
-#/bin/sh
+#!/bin/sh
 
 export HOST_UID="$(id -u)" HOST_GID="$(id -g)"
 
