@@ -3,9 +3,13 @@ services:
   jupyter:
     build: ./jupyter/
     container_name: cde_jupyter
-    command: ["jupyter", "notebook", "--allow-root", "--ip", "0.0.0.0", "--no-browser", "--NotebookApp.token=''", "--NotebookApp.password=''"]
+    # run as the host user so files written to the bind mounts are owned by you
+    user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
+    command: ["jupyter", "notebook", "--ip", "0.0.0.0", "--no-browser", "--NotebookApp.token=''", "--NotebookApp.password=''"]
     environment:
       - PYICEBERG_HOME=/_notebooks
+      # no passwd entry exists for the host UID, so give Jupyter/Spark a writable home
+      - HOME=/tmp
     ports:
       - "8888:8888"
     volumes:
@@ -19,6 +23,7 @@ services:
   seaweedfs:
     build: ./seaweedfs/
     container_name: cde_seaweedfs
+    user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
     command: ["server", "-s3", "-dir=/opt/data", "-ip=seaweedfs", "-ip.bind=0.0.0.0", "-s3.port=8333", "-s3.config=/etc/seaweedfs/s3.json"]
     ports:
       - "8333:8333"

@@ -16,7 +16,7 @@ RUN ln -sf /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 
 # install system-level packages
 RUN apt -y update && \
-    apt -y install jq openjdk-21-jre wget
+    apt -y install jq openjdk-21-jre wget libnss-wrapper
 
 # install Python dependencies
 COPY requirements.txt /
@@ -33,3 +33,10 @@ RUN wget ${MAVEN_REPO}/org/apache/iceberg/iceberg-aws-bundle/${ICEBERG_VERSION}/
 
 # configure Spark logging
 COPY log4j2.properties ${SPARK_HOME}/conf
+
+# keep Spark's default warehouse out of the notebooks' folders (ephemeral, in the container)
+COPY spark-defaults.conf ${SPARK_HOME}/conf
+
+# support running as an arbitrary (host) UID
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
