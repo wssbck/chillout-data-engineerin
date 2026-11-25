@@ -36,7 +36,7 @@ services:
       - LAKEKEEPER__PG_ENCRYPTION_KEY=postgresql_key
       - LAKEKEEPER__PG_DATABASE_URL_READ=postgresql://postgres:postgres@postgres:5432/postgres
       - LAKEKEEPER__PG_DATABASE_URL_WRITE=postgresql://postgres:postgres@postgres:5432/postgres
-      - RUST_LOG=trace,axum=trace,sqlx=trace,lakekeeper=trace
+      - RUST_LOG=info
     command: [ "serve" ]
     healthcheck:
       test: [ "CMD", "/home/nonroot/lakekeeper", "healthcheck" ]
