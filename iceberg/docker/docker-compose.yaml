@@ -21,7 +21,7 @@ services:
         target: /_notebooks
 
   seaweedfs:
-    build: ./seaweedfs/
+    image: chrislusf/seaweedfs:4.53
     container_name: cde_seaweedfs
     user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
     command: ["server", "-s3", "-dir=/opt/data", "-ip=seaweedfs", "-ip.bind=0.0.0.0", "-s3.port=8333", "-s3.config=/etc/seaweedfs/s3.json"]
@@ -33,9 +33,12 @@ services:
       - type: bind
         source: ../_data
         target: /opt/data
+      - type: bind
+        source: ./seaweedfs/s3.json
+        target: /etc/seaweedfs/s3.json
 
   lakekeeper:
-    build: ./lakekeeper/
+    image: quay.io/lakekeeper/catalog:v0.15.0
     container_name: cde_lakekeeper
     environment:
       - LAKEKEEPER__PG_ENCRYPTION_KEY=postgresql_key
@@ -56,7 +59,7 @@ services:
       - "8181:8181"
   
   postgres:
-    build: ./postgresql/
+    image: postgres:18.7
     container_name: cde_postgres
     environment:
       - POSTGRES_DB=postgres
@@ -64,7 +67,7 @@ services:
       - POSTGRES_PASSWORD=postgres
 
   trino:
-    build: ./trino/
+    image: trinodb/trino:484
     container_name: cde_trino
     ports:
       - "8080:8080"

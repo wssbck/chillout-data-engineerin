@@ -14,6 +14,6 @@ find ./_notebooks -type d -name .ipynb_checkpoints -prune -exec rm -rf {} +
 find ./_notebooks -type d -name spark-warehouse -prune -exec rm -rf {} +
 
 echo "==> [4/4] Removing Docker images"
-docker rmi --force docker-jupyter docker-seaweedfs docker-lakekeeper docker-postgres docker-trino
+docker rmi --force docker-jupyter
 
 echo "==> Done. Run ./dbuild to rebuild the images."
