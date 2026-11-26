@@ -1,11 +1,11 @@
 {
   "identities": [
     {
-      "name": "s3user",
+      "name": "s3key",
       "credentials": [
         {
-          "accessKey": "s3user",
-          "secretKey": "s3user"
+          "accessKey": "s3key",
+          "secretKey": "s3key"
         }
       ],
       "actions": [

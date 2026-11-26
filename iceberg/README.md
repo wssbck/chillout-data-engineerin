@@ -54,7 +54,7 @@ After the stack is up, following UIs can be accessed in the browser:
 
 - the Jupyter environment at http://localhost:8888, with notebooks in `/_notebooks/`
 - the Trino UI at http://localhost:8080 (any user name will do)
-- the SeaweedFS S3 endpoint at http://localhost:8333 (access key: `s3user`, secret key: `s3user`)
+- the SeaweedFS S3 endpoint at http://localhost:8333 (access key: `s3key`, secret key: `s3key`)
 - the SeaweedFS filer UI at http://localhost:8889 and master UI at http://localhost:9333
 
 To intialise the environment and verify that everything works, execute cells in the notebook called `prepare.ipynb`, one by one.
