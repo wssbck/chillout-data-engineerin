@@ -1,4 +1,19 @@
-#/bin/sh
+#!/bin/sh
 
-docker compose -f ./docker/docker-compose.yaml rm --stop --force
-docker rmi --force docker-jupyter docker-minio docker-nessie docker-trino
+export HOST_UID="$(id -u)" HOST_GID="$(id -g)"
+
+echo "==> [1/4] Stopping and removing containers and their anonymous volumes"
+docker compose -f ./docker/docker-compose.yaml rm --stop --force --volumes
+docker compose -f ./docker/docker-compose-migrate.yaml rm --stop --force --volumes
+
+echo "==> [2/4] Removing data written by the notebooks from ./_data (keeping .gitkeep)"
+find ./_data -mindepth 1 ! -name .gitkeep -exec rm -rf {} +
+
+echo "==> [3/4] Removing Jupyter autosave checkpoints and Spark warehouses from ./_notebooks"
+find ./_notebooks -type d -name .ipynb_checkpoints -prune -exec rm -rf {} +
+find ./_notebooks -type d -name spark-warehouse -prune -exec rm -rf {} +
+
+echo "==> [4/4] Removing Docker images"
+docker rmi --force docker-jupyter
+
+echo "==> Done. Run ./dbuild to rebuild the images."

@@ -5,7 +5,7 @@ This folder contains a Docker Compose stack with notebooks demonstrating how to 
 - a Jupyter notebook environment that includes PySpark, Polars and DuckDB (https://jupyter.org/)
 - a single-node Trino cluster (https://trino.io/)
 - an instance of Lakekeeper catalog (https://lakekeeper.io/)
-- a MinIO storage service, compatible with AWS S3 and used as the underlying storage (https://min.io/)
+- a SeaweedFS storage service with its S3 gateway, used as the underlying storage (https://github.com/seaweedfs/seaweedfs)
 - a PostgreSQL database for Lakekeeper metadata storage
 
 ### Requirements
@@ -54,7 +54,8 @@ After the stack is up, following UIs can be accessed in the browser:
 
 - the Jupyter environment at http://localhost:8888, with notebooks in `/_notebooks/`
 - the Trino UI at http://localhost:8080 (any user name will do)
-- the MinIO console at http://localhost:9001 (user: `minioadmin`, password: `minioadmin`)
+- the SeaweedFS S3 endpoint at http://localhost:8333 (access key: `s3key`, secret key: `s3key`)
+- the SeaweedFS filer UI at http://localhost:8889 and master UI at http://localhost:9333
 
 To intialise the environment and verify that everything works, execute cells in the notebook called `prepare.ipynb`, one by one.
 
@@ -65,7 +66,7 @@ The `_notebooks/` directory contains the following sets of examples and exercise
 #### `prepare.ipynb`
 
 Initial setup notebook that must be run first. This notebook:
-- Creates the S3 bucket in MinIO for table storage
+- Creates the S3 bucket in SeaweedFS for table storage
 - Bootstraps the Lakekeeper catalog
 - Initializes the Iceberg warehouse
 - Verifies that Spark and Trino clients can connect properly
@@ -124,7 +125,7 @@ A comprehensive workshop notebook covering advanced Iceberg features:
 
 ### Cleanup
 
-All Docker containers and images can be removed by running:
+All data, notebok checkpoints, Docker containers and images can be removed by running:
 
 ```sh
 ./dclean

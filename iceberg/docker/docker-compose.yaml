@@ -3,9 +3,13 @@ services:
   jupyter:
     build: ./jupyter/
     container_name: cde_jupyter
-    command: ["jupyter", "notebook", "--allow-root", "--ip", "0.0.0.0", "--no-browser", "--NotebookApp.token=''", "--NotebookApp.password=''"]
+    # run as the host user so files written to the bind mounts are owned by you
+    user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
+    command: ["jupyter", "notebook", "--ip", "0.0.0.0", "--no-browser", "--NotebookApp.token=''", "--NotebookApp.password=''"]
     environment:
       - PYICEBERG_HOME=/_notebooks
+      # no passwd entry exists for the host UID, so give Jupyter/Spark a writable home
+      - HOME=/tmp
     ports:
       - "8888:8888"
     volumes:
@@ -16,32 +20,32 @@ services:
         source: ../_notebooks
         target: /_notebooks
 
-  minio:
-    build: ./minio/
-    container_name: cde_minio
-    command: ["minio", "server", "/opt/data", "--console-address", ":9001"]
-    environment:
-      - MINIO_DOMAIN=minio
-      - MINIO_ROOT_USER=minioadmin
-      - MINIO_ROOT_PASSWORD=minioadmin
-      - MINIO_REGION_NAME=eu-central-1
-      - MINIO_REGION=eu-central-1
+  seaweedfs:
+    image: chrislusf/seaweedfs:4.53
+    container_name: cde_seaweedfs
+    stop_grace_period: 30s
+    user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
+    command: ["server", "-s3", "-dir=/opt/data", "-ip=seaweedfs", "-ip.bind=0.0.0.0", "-s3.port=8333", "-s3.config=/etc/seaweedfs/s3.json"]
     ports:
-      - "9000:9000"
-      - "9001:9001"
+      - "8333:8333"
+      - "8889:8888"
+      - "9333:9333"
     volumes:
       - type: bind
         source: ../_data
         target: /opt/data
+      - type: bind
+        source: ./seaweedfs/s3.json
+        target: /etc/seaweedfs/s3.json
 
   lakekeeper:
-    build: ./lakekeeper/
+    image: quay.io/lakekeeper/catalog:v0.15.0
     container_name: cde_lakekeeper
     environment:
       - LAKEKEEPER__PG_ENCRYPTION_KEY=postgresql_key
       - LAKEKEEPER__PG_DATABASE_URL_READ=postgresql://postgres:postgres@postgres:5432/postgres
       - LAKEKEEPER__PG_DATABASE_URL_WRITE=postgresql://postgres:postgres@postgres:5432/postgres
-      - RUST_LOG=trace,axum=trace,sqlx=trace,lakekeeper=trace
+      - RUST_LOG=info
     command: [ "serve" ]
     healthcheck:
       test: [ "CMD", "/home/nonroot/lakekeeper", "healthcheck" ]
@@ -51,12 +55,12 @@ services:
       start_period: 3s
     depends_on:
       - postgres
-      - minio
+      - seaweedfs
     ports:
       - "8181:8181"
   
   postgres:
-    build: ./postgresql/
+    image: postgres:18.7
     container_name: cde_postgres
     environment:
       - POSTGRES_DB=postgres
@@ -64,7 +68,7 @@ services:
       - POSTGRES_PASSWORD=postgres
 
   trino:
-    build: ./trino/
+    image: trinodb/trino:484
     container_name: cde_trino
     ports:
       - "8080:8080"

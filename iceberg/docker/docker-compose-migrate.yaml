@@ -1,7 +1,7 @@
 services:
 
   lakekeeper-migrate:
-    build: ./lakekeeper/
+    image: quay.io/lakekeeper/catalog:v0.15.0
     container_name: cde_lakekeeper_migrate
     environment:
       - LAKEKEEPER__PG_ENCRYPTION_KEY=postgresql_key
@@ -14,7 +14,7 @@ services:
       - postgres
   
   postgres:
-    build: ./postgresql/
+    image: postgres:18.7
     container_name: cde_postgres
     environment:
       - POSTGRES_DB=postgres

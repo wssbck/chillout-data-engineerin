@@ -1,4 +1,6 @@
-#/bin/sh
+#!/bin/sh
+
+export HOST_UID="$(id -u)" HOST_GID="$(id -g)"
 
 docker compose -f ./docker/docker-compose-migrate.yaml up --abort-on-container-exit
 docker compose -f ./docker/docker-compose.yaml up --abort-on-container-exit
