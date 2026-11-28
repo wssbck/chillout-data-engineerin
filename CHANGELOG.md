@@ -1,4 +1,4 @@
-# Releases
+# Changelog
 
 Releases are numbered by date (`YYYYMMDD`). Newest first.
 
