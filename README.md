@@ -4,7 +4,7 @@ A collection of notebooks and other code related to experiments in data engineer
 
 ## Projects
 
-### Apache Iceberg (`/iceberg`)
+### Apache Iceberg ([`/iceberg`](iceberg/))
 
 A Docker Compose stack with Jupyter notebooks demonstrating how to work with Apache Iceberg tables on top of S3-compatible storage. The stack includes:
 
@@ -14,4 +14,8 @@ A Docker Compose stack with Jupyter notebooks demonstrating how to work with Apa
 - SeaweedFS for S3-compatible object storage
 - PostgreSQL for metadata storage
 
-See `/iceberg/README.md` for detailed setup instructions and usage examples.
+See [`/iceberg/README.md`](iceberg/README.md) for detailed setup instructions and usage examples.
+
+## Changelog
+
+Release history is contained in [`CHANGELOG.md`](CHANGELOG.md).

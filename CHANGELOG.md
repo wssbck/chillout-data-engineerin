@@ -1,6 +1,13 @@
 # Changelog
 
-Releases are numbered by date (`YYYYMMDD`). Newest first.
+Releases are numbered by date (`YYYYMMDD`). Newest first. Released sections are immutable: never edit them; new changes go into a new dated section.
+
+### 20261128
+
+#### Improvements
+- [GENERAL] Release notes moved from `RELEASE.md` to `CHANGELOG.md`.
+- [GENERAL] Updates to `README.md`.
+- [GENERAL] Minimalistic `AGENTS.md` added.
 
 ### 20261125
 
